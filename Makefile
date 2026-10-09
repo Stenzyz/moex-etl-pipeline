@@ -20,7 +20,7 @@ FROM ?=
 TILL ?=
 
 .PHONY: all init jars build up down clean wait gen-keys ch-migrate create-bucket \
-	backfill test lint ps
+	explore ingest backfill test lint ps
 
 all: init
 
@@ -93,6 +93,18 @@ ch-migrate:
 
 create-bucket:
 	$(AIRFLOW_EXEC) python /opt/airflow/scripts/create_bucket.py
+
+# разведка ISS, результат идёт в docs/scope.md
+explore:
+	$(AIRFLOW_EXEC) python /opt/airflow/scripts/explore_iss.py
+
+# прямой запуск загрузчика, без Airflow: make ingest FROM=2026-09-01 TILL=2026-09-30
+ingest:
+	@if [ -z "$(FROM)" ] || [ -z "$(TILL)" ]; then \
+		echo "Usage: make ingest FROM=YYYY-MM-DD TILL=YYYY-MM-DD"; exit 1; \
+	fi
+	$(AIRFLOW_EXEC) python -m ingest.load_candles \
+		--date-from $(FROM) --date-till $(TILL)
 
 # DAG moex_backfill появится на этапе 6
 backfill:

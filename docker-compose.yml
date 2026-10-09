@@ -14,8 +14,10 @@ x-airflow-common: &airflow-common
     AIRFLOW__CORE__EXECUTION_API_SERVER_URL: http://airflow-apiserver:8080/execution/
     AIRFLOW__API_AUTH__JWT_SECRET: ${AIRFLOW_JWT_SECRET}
     AIRFLOW__SCHEDULER__ENABLE_HEALTH_CHECK: "true"
-    # для импортов вида from ingest.client import ...
+    # для импортов вида from ingest.iss import ...
     PYTHONPATH: /opt/airflow
+    # путь внутри контейнера, поэтому задан здесь, а не в .env
+    SECURITIES_CSV: /opt/airflow/project_config/securities.csv
   volumes:
     - ./dags:/opt/airflow/dags
     - ./logs:/opt/airflow/logs
