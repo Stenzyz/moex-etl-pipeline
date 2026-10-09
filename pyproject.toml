@@ -1,0 +1,21 @@
+[project]
+name = "moex-etl"
+version = "0.1.0"
+description = "MOEX ISS ETL: S3, PySpark, ClickHouse, Superset, Airflow"
+requires-python = ">=3.12"
+
+[tool.ruff]
+line-length = 88
+target-version = "py312"
+extend-exclude = ["logs"]
+
+[tool.ruff.format]
+quote-style = "double"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B"]
+
+[tool.pytest.ini_options]
+# импорты как в контейнере
+pythonpath = ["."]
+testpaths = ["tests"]

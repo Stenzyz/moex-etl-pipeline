@@ -1,0 +1,5 @@
+# с CRLF скрипты из docker/ падают в контейнере с "bad interpreter"
+* text=auto eol=lf
+*.png binary
+*.jpg binary
+*.parquet binary
