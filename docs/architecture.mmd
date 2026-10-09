@@ -1,0 +1,14 @@
+flowchart LR
+    ISS["MOEX ISS API<br/>1-мин свечи"]
+    EXT["ingest<br/>Python, httpx"]
+    RAW[("MinIO (S3)<br/>raw/")]
+    SPK["Spark cluster<br/>master + worker"]
+    PROC[("MinIO (S3)<br/>processed/")]
+    CH[("ClickHouse<br/>core + marts")]
+    SS["Superset"]
+    AF{{"Airflow"}}
+
+    ISS --> EXT --> RAW --> SPK --> PROC -->|"INSERT ... FROM s3()"| CH --> SS
+    AF -.-> EXT
+    AF -.->|spark-submit| SPK
+    AF -.->|load, DQ| CH
